@@ -76,7 +76,9 @@ app.get('/', function(req, res){
   res.send('hello world!');
 });
 
-//GET all users
+
+        /*Registration Begin*/
+//GET: get all users
 app.get('/api/users', function(req, res){
   User.getUsers(function(err, users){
     if(err) throw err;
@@ -84,7 +86,7 @@ app.get('/api/users', function(req, res){
   });
 });
 
-//
+//POST: create an account.
 app.post('/api/register', function(req, res){
   console.log(req.body);
   //Validation
@@ -119,11 +121,9 @@ app.post('/api/register', function(req, res){
       res.json({created: true});
     });
   }
-  });
-
-  
-
+  });       
 });
+        /*Registration End*/
 
 //Set port
 app.set('port', (process.env.PORT || 3000));
