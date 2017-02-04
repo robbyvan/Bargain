@@ -109,6 +109,7 @@ app.post('/api/register', function(req, res){
       cart: [],
       selling: []
     });
+    console.log(newUser);
     User.createUser(newUser, function(err, user){
       if (err){
         res.json({created: false});

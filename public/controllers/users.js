@@ -13,10 +13,15 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
   $scope.createUser = function(){
     $http.post('/api/register', $scope.user).then(function(response){
       console.log('submit success!');
-      console.log('errors are: ');
-      for (errInfo in response.data){
-        console.log(response.data[errInfo].msg);
+
+      var count = (response.data.length === undefined)? 0 : response.data.length;
+      console.log('have ' + count + ' error(s)');
+      if (count > 0){
+        for (errInfo in response.data){
+         console.log(response.data[errInfo].msg);
+        }
       }
+      
       // window.location.href = "#!/movies";
     });
   }
