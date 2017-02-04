@@ -6,8 +6,6 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
-// var passport = require('passport');
-// var localStrategy = require('passport-local'), Strategy;
 
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
@@ -58,16 +56,6 @@ app.use(expressValidator({
 
 //Connect Flash
 app.use(flash());
-
-//Global Vars
-app.use(function(req, res, next){
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  res.locals.user = req.user || null;
-  next();
-});
-
 
 var User = require('./models/users.js');
 
@@ -124,6 +112,8 @@ app.post('/api/register', function(req, res){
   });       
 });
         /*Registration End*/
+
+
 
 //Set port
 app.set('port', (process.env.PORT || 3000));
