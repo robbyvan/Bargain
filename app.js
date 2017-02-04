@@ -76,6 +76,13 @@ app.get('/', function(req, res){
   res.send('it works!');
 });
 
+app.get('/api/users', function(req, res){
+  User.getUsers(function(err, users){
+    if(err) throw err;
+    res.json(users);
+  });
+});
+
 //Set port
 app.set('port', (process.env.PORT || 3000));
 app.listen(app.get('port'), function(){

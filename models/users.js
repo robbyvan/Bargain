@@ -24,6 +24,12 @@ var userSchema = new mongoose.Schema({
 var User = mongoose.model('User', userSchema);
 module.exports = User;
 
+
+//get all users
+module.exports.getUsers = function(callback, limit){
+  User.find(callback).limit(limit);
+}
+
 /*Register*/
 //create an account
 module.exports.createUser = function(user, callback){
