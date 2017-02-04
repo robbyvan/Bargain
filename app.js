@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 //Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 //Express Session
 app.use(session({
@@ -73,14 +73,55 @@ var User = require('./models/users.js');
 
 //rest APIs
 app.get('/', function(req, res){
-  res.send('it works!');
+  res.send('hello world!');
 });
 
+//GET all users
 app.get('/api/users', function(req, res){
   User.getUsers(function(err, users){
     if(err) throw err;
     res.json(users);
   });
+});
+
+//
+app.post('/api/register', function(req, res){
+  console.log(req.body);
+  //Validation
+  req.checkBody('username', 'Username is required.').notEmpty();
+  //Notice: need to check if username already existed later
+  req.checkBody('password', 'Password is required.').notEmpty();
+  req.checkBody('password2', 'Password does not match.').equals(req.body.password);
+  //No need to check e-mail format at server side.
+
+  var errors = req.getValidationResult()
+  .then(function(result){
+    if (!result.isEmpty()){
+    var errors = result.array();
+    console.log('hey! sth wrong!' + errors);
+    // var obj = Object.assign(res, errors);
+    res.json(errors);
+  }else{
+    var newUser = new User({
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      cart: [],
+      selling: []
+    });
+    User.createUser(newUser, function(err, user){
+      if (err){
+        res.json({created: false});
+        throw err;
+      }
+      console.log('info correct!' + user);
+      res.json({created: true});
+    });
+  }
+  });
+
+  
+
 });
 
 //Set port
