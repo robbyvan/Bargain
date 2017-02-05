@@ -14,3 +14,5 @@
  - Login API Added. /api/login 
    <br />(middlewares: express-session, passport(local Strategy), cookie-parser)
    <br />Need to add http interceptor intercept 401 using Angular later
+ - Authentication added. /api/ensureAuth
+   <br /> If user is not logged in, when visiting some pages, he/she will be redirect to login page.
