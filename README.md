@@ -12,5 +12,5 @@
 + Feb 4th
  - Register API finished. /api/register
  - Login API Added. /api/login 
-   (middlewares: express-session, passport(local Strategy), cookie-parser)
-    Need to add 401 status interceptor using Angular later
+   <br />(middlewares: express-session, passport(local Strategy), cookie-parser)
+   <br />Need to add http interceptor intercept 401 using Angular later
