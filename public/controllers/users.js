@@ -21,8 +21,14 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
          console.log(response.data[errInfo].msg);
         }
       }
-      
-      // window.location.href = "#!/movies";
+
+    });
+  }
+
+  $scope.userLogin = function(){
+    $http.post('/api/login', $scope.user).then(function(response){
+      console.log('submit success!');
+      console.log(response);
     });
   }
 
