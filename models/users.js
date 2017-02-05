@@ -44,8 +44,13 @@ module.exports.createUser = function(newUser, callback){
 
 /*Login*/
 //find user
+
+module.exports.getUserById = function(id, callback){
+  User.findById(id, callback);
+}
+
 module.exports.getUserByUsername = function(username, callback){
-  console.log('Im here');
+  // console.log('Im here');
   var query = {username: username};
   User.findOne(query, callback);
 }

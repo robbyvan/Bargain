@@ -4,6 +4,16 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
 
   console.log("UserController Loaded.");
 
+  $scope.ensureAuthenticated = function(){
+    $http.get('/ensureAuth').then(function(response){
+      console.log(response.data);
+      var auth = response.data.authenticated;
+      if (!auth){
+        window.location.href = '#!/login';
+      }
+    });
+  }
+
   $scope.getUsers = function(){
     $http.get('/api/users').then(function(response){
       $scope.users = response.data;
@@ -28,7 +38,16 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
   $scope.userLogin = function(){
     $http.post('/api/login', $scope.user).then(function(response){
       console.log('submit success!');
-      console.log(response);
+      window.location.href = '#!/';      
+      console.log('You are logged in!');
+      console.log($scope.user);
+    });
+  }
+
+  $scope.userLogout = function(){
+    $http.get('/api/logout').then(function(response){
+      window.location.href = '#!/login';
+      console.log('You are logged out!');
     });
   }
 

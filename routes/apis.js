@@ -85,7 +85,7 @@ router.post('/login',
   function(req, res){
     //if authentication passed.
     console.log('passed, req is: ');
-    console.log(req);
+    res.json({logged: true});
   }
 );
 
@@ -102,5 +102,12 @@ passport.deserializeUser(function(id, done) {
   });
 });
         /*---Login End---*/
+
+        /*---Logout Begin---*/
+router.get('/logout', function(req, res){
+  req.logout();
+  res.send('done');
+});
+        /*---Logout End---*/
 
 module.exports = router;   

@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 //Express Session
 app.use(session({
   secret: 'secret',
+  cookie: {maxAge: 30000},
   saveUninitialized: true,
   resave: false
 }));
@@ -63,7 +64,24 @@ app.use(expressValidator({
 
 
 //Add routes
+
 app.use('/api', apis);
+
+//check if authenticated.
+function ensureAuthenticated(req, res, next){
+  console.log(req.isAuthenticated());
+  if (req.isAuthenticated()){
+    return next();
+  }else{
+    // req.flash('error', 'You are not logged in');
+    res.json({authenticated: false});
+  }
+}
+app.get('/ensureAuth', ensureAuthenticated, function(req, res){
+  res.json({authenticated: true});
+});
+
+
 
 app.get('*', function(req, res){
   res.send('404 Not found');
