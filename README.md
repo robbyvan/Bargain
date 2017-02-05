@@ -7,5 +7,8 @@
 
 
 ##Update
-+ Feb 3rd: Init
-+ Feb 4th: Register API finished. /api/register
++ Feb 3rd 
+ - Init 
++ Feb 4th
+ - Register API finished. /api/register
+ - Login API Added. /api/login (middlewares: express-session, passport(local Strategy), cookie-parser)
