@@ -3,7 +3,7 @@
 ##Description
 + O2O Front-End Back-End separation app. 
 + Using Restful API, Angular + Express + MongoDB. 
-+ Practising Full-Stack development.
++ Practising MEAN Stack development.
 
 
 ##Update
