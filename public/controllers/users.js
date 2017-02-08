@@ -1,18 +1,13 @@
 var myApp = angular.module('myApp');
 
-myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$location', function($scope, $http, $routeParams, $location){
+myApp.service('DataShareService', function(){
+  
+});
+
+
+myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$location', 'DataShareService', function($scope, $http, $routeParams, $location, DataShareService){
 
   console.log("UserController Loaded.");
-
-  $scope.ensureAuthenticated = function(){
-    $http.get('/ensureAuth').then(function(response){
-      console.log(response.data);
-      var auth = response.data.authenticated;
-      if (!auth){
-        window.location.href = '#!/login';
-      }
-    });
-  }
 
   $scope.getUsers = function(){
     $http.get('/api/users').then(function(response){
@@ -36,11 +31,39 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
   }
 
   $scope.userLogin = function(){
+    //added
+    DataShareService.currentUser = $scope.user.username;
+
     $http.post('/api/login', $scope.user).then(function(response){
       console.log('submit success!');
       window.location.href = '#!/';      
       console.log('You are logged in!');
-      console.log($scope.user);
+      console.log($scope.username);
+    });
+  }
+
+  // $scope.userLogout = function(){
+  //   $http.get('/api/logout').then(function(response){
+  //     window.location.href = '#!/login';
+  //     console.log('You are logged out!');
+  //   });
+  // }
+
+}]);
+
+myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$location', 'DataShareService', function($scope, $http, $routeParams, $location, DataShareService){
+
+  console.log('homepageController Loaded.');
+
+  $scope.ensureAuthenticated = function(){
+    $http.get('/ensureAuth').then(function(response){
+      console.log(response.data);
+      var auth = response.data.authenticated;
+      if (!auth){
+        window.location.href = '#!/login';
+      }else{
+        $scope.username = DataShareService.currentUser;
+      }
     });
   }
 

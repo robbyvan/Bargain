@@ -3,7 +3,7 @@ var myApp = angular.module('myApp', ['ngRoute']);
 myApp.config(function($routeProvider){
   $routeProvider
   .when('/', {
-    controller: 'UserController',
+    controller: 'homepageController',
     templateUrl: 'views/commodity.html'
   })
   .when('/register', {
