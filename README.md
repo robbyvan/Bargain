@@ -16,3 +16,6 @@
    <br />Need to add http interceptor to intercept 400/401 to render using Angular later
  - Authentication added. /api/ensureAuth
    <br /> If user is not logged in, when visiting pages that need authority, user will be redirected to login page.
++ Feb 7th
+ - Added Service to share data between controllers
+ - Item methods added.
