@@ -56,13 +56,14 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
   console.log('homepageController Loaded.');
 
   $scope.ensureAuthenticated = function(){
-    $http.get('/ensureAuth').then(function(response){
+    $http.get('/api/ensureAuth').then(function(response){
       console.log(response.data);
       var auth = response.data.authenticated;
       if (!auth){
         window.location.href = '#!/login';
       }else{
-        $scope.username = DataShareService.currentUser;
+        $scope.username = response.data.username;
+        DataShareService.currentUser = response.data.username;
       }
     });
   }

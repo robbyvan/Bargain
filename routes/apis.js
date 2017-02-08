@@ -5,6 +5,28 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/users.js');
 
+
+//check if authenticated.
+function ensureAuthenticated(req, res, next){
+  console.log(req.isAuthenticated());
+  if (req.isAuthenticated()){
+    return next();
+  }else{
+    // req.flash('error', 'You are not logged in');
+    res.json({authenticated: false});
+  }
+}
+router.get('/ensureAuth', ensureAuthenticated, function(req, res){
+  console.log('=====USER=====');
+  console.log(req.session.passport.user);
+  User.getUserById(req.session.passport.user, function(err, user){
+    console.log('-----After-----');
+    console.log(user);
+    res.json({authenticated: true, username: user.username});
+  });
+});
+
+
 //GET: get all users
 router.get('/users', function(req, res){
   User.getUsers(function(err, users){
