@@ -1,8 +1,11 @@
-<div ng-init="ensureAuthenticated()">
+<div ng-init="homepageInit()">
 
-<ul ng-repeat="item in items">
-  <li><{{item.name}}</li>
-</ul>
+<div>
+    <li>{{item.name}}</li>
+    <li>{{item.price}}</li>
+    <li>{{item.vendor}}</li>
+  <a href="/details/{{item._id}}">Learn More</a>
+</div>
 
 <h1>Welcome, {{username}}</h1>
 
