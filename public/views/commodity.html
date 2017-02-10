@@ -6,13 +6,19 @@
 
 <div ng-repeat="item in items">
     <h3>{{item.name}}</h3>
-    <li>{{item.price}}</li>
-    <li>{{item.vendor}}</li>
+    <li>Price: ${{item.price}}</li>
+    <li>In Stock: {{item.quantity}}</li>
+    <li>Vendor: {{item.vendor}}</li>
     <a href="/details/{{item._id}}">Learn More</a>
+    <br />
+    <a href="/cart">Add to my cart</a>
+    <br />
 </div>
 
-<a href="#!/items/add">Add item</a>
-
+<br />
+<a href="#!/items/add"> + Add item</a>
+<br />
+<br />
 <button ng-click="userLogout()">Log Out</button>
 
 </div>
