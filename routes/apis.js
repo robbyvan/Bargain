@@ -144,6 +144,16 @@ router.get('/items', function(req, res){
   });
 });
 
+//GET: get item by id
+router.get('/item/:_id', function(req, res){
+  var id = req.params._id;
+  Item.getItemById(id, function(err, item){
+    if (err) throw err;
+    console.log('get item');
+    res.json(item);
+  });
+});
+
 //POST: add new item
 router.post('/items', function(req, res){
   var newItem = req.body;

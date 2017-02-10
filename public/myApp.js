@@ -26,8 +26,8 @@ myApp.config(function($routeProvider){
     controller: 'homepageController',
     templateUrl: 'views/edit_item.html'
   })
-  .when('/items/details/:id', {
-    controller: 'homepageController',
+  .when('/details/:id', {
+    controller: 'detailController',
     templateUrl: 'views/item_detail.html'
   })
   .otherwise({
