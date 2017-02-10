@@ -7,56 +7,69 @@ var cartSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  item_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Item'
-  },
-  demand: {
-    type: Number,
-    default: 0
-  },
-  img_url: {
-    type: String
-  },
+  orders: [{
+    item_id:{ 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Item'
+    },
+    demand: {
+      type: Number
+    }
+  }]
 });
 
-var Item = mongoose.model('Item', itemSchema);
-module.exports = Item;
+var Cart = mongoose.model('Cart', itemSchema);
+module.exports = Cart;
 
-//Selling page
 
-//GET: get [limit] items
-module.exports.getItems = function (callback, limit){
-  Item.find(callback).limit(limit);
-};
+//READ: get user's cart
+module.exports.getBuyList = function(userId, callback){
+  var query = {user_id: userId};
+  Cart.find(query, callback);
+}
 
-//Get: get more info about the item
-module.exports.getItemById = function(id, callback){
-  Item.findById(id, callback);
-};
+//CREATE: called when when an user first sign up.
+module.exports.createCart = function(userCart, callback){
+  Cart.create(userCart, callback);
+}
 
-//POST: (need authentication first) put new item on the shelf
-module.exports.addItem = function(item, callback){
-  Item.create(item, callback);
-};
-
-//PUT: (need authentication first) edit item info
-module.exports.updateItem = function(id, item, options, callback){
-  var query = {_id: id};
+//UPDATE: add a new item to the cart
+module.exports.addToCart = function(userId, wish, callback){
+  var query = {user_id: userId};
   var update = {
-    price: item.price,
-    quantity: item.quantity,
-    description: item.description,
-    img_url: item.img_url,
-    // vendor: can not modify this
-    // name: can not modify
-    create_date: Date.now
+    $push: {
+      "orders": {
+        item_id: wish.itemId, 
+        demand: wish.demand
+      }
+    }
   };
-  Item.findOneAndUpdate(query, update, options, callback);
-};
+  var options = {new: true};
+  Cart.findOneAndUpdate(query, update, options, callback);
+}
 
-//DELETE: (need authentication first) remove the item
-module.exports.removeItem = function(id, callback){
-  var query = {_id: id};
-  Item.remove(query, callback);
+//UPDATE: edit the quantity of the order
+module.exports.updateDemand = function(userId, item, callback){
+  var query = {user_id: userId, "orders.item_id": item.id};
+  var update = {
+    orders:{
+      demand: item.demand 
+    }
+  };
+  var options = {new: true};
+  Cart.findOneAndUpdate(query, update, options, callback);
+}
+
+//REMOVE: remove an item from the cart
+module.exports.removeFromCart = function(userId, itemId, callback){
+  var query = {user_id: userId}
+  var update = {
+    $pull: {
+      "orders": {
+        item_id: itemId
+      }
+    }
+  };
+  var options = {new: true};
+  Cart.findOneAndUpdate(query, update, options, callback);
 }
