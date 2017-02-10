@@ -132,4 +132,46 @@ router.get('/logout', function(req, res){
 });
         /*---Logout End---*/
 
+
+        /*Item Begin*/
+
+//GET: get all items
+router.get('/items', function(req, res){
+  Item.getItems(function(err, items){
+    if (err) throw err;
+    res.json(items);
+  });
+});
+
+//POST: add new item
+router.post('/items', function(req, res){
+  var newItem = req.body;
+  Item.addItem(newItem, function(err, items){
+    if (err) throw err;
+    res.json(items);
+  });
+});
+
+//PUT: edit item
+router.put('/items/:_id', function(req, res){
+  var id = req.params._id;
+  var item = req.body;
+  Item.updateItem(id, item, {}, function(err, item){
+    if (err) throw err;
+    res.json(item);
+  });
+});
+
+//DELETE: remove an item
+router.delete('/items/:_id', function(req, res){
+  var id = req.params._id;
+  Item.removeItem(id, function(err, items){
+    if (err) throw err;
+    res.json(items);
+  });
+});
+
+
+/*Item Begin*/
+
 module.exports = router;   

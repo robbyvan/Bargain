@@ -1,9 +1,7 @@
 <div ng-init="ensureAuthenticated()">
 
-<ul>
-  <li>stuff 1</li>
-  <li>stuff 2</li>
-  <li>stuff 3</li>
+<ul ng-repeat="item in items">
+  <li><{{item.name}}</li>
 </ul>
 
 <h1>Welcome, {{username}}</h1>

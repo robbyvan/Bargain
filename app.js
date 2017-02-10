@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 //Express Session
 app.use(session({
   secret: 'secret',
-  cookie: {maxAge: 30000},
+  cookie: {maxAge: 300000}, //expires after 5 min
   saveUninitialized: true,
   resave: false
 }));
