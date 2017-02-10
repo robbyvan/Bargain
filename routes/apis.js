@@ -4,6 +4,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/users.js');
+var Item = require('../models/items.js');
 
 
 //check if authenticated.
@@ -146,8 +147,10 @@ router.get('/items', function(req, res){
 //POST: add new item
 router.post('/items', function(req, res){
   var newItem = req.body;
+  console.log(newItem);
   Item.addItem(newItem, function(err, items){
     if (err) throw err;
+    console.log('added.');
     res.json(items);
   });
 });

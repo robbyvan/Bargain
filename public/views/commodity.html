@@ -1,13 +1,17 @@
 <div ng-init="homepageInit()">
 
-<div>
-    <li>{{item.name}}</li>
+<h1>Welcome, {{username}}</h1>
+
+<h2>On Sale</h2>
+
+<div ng-repeat="item in items">
+    <h3>{{item.name}}</h3>
     <li>{{item.price}}</li>
     <li>{{item.vendor}}</li>
-  <a href="/details/{{item._id}}">Learn More</a>
+    <a href="/details/{{item._id}}">Learn More</a>
 </div>
 
-<h1>Welcome, {{username}}</h1>
+<a href="#!/items/add">Add item</a>
 
 <button ng-click="userLogout()">Log Out</button>
 

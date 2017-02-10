@@ -68,16 +68,23 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
     });
   }
 
-  $scope.getItems = function(){
-    $http.get('/api/items').then(function(response){
-      $scope.items = response.data;
-    });
-  }
-
   $scope.userLogout = function(){
     $http.get('/api/logout').then(function(response){
       window.location.href = '#!/login';
       console.log('You are logged out!');
+    });
+  }
+
+  $scope.getItems = function(){
+    $http.get('/api/items').then(function(response){
+      $scope.items = response.data;
+      console.log($scope.items);
+    });
+  }
+
+  $scope.addItem = function(){
+    $http.post('/api/items', $scope.newItem).then(function(response){
+      window.location.href = "#!/";
     });
   }
 
