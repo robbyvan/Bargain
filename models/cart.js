@@ -1,34 +1,23 @@
 var mongoose = require('mongoose');
 
 //Item Schema
-var itemSchema = new mongoose.Schema({
-  name: {
-    type: String,
+var cartSchema = new mongoose.Schema({
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
-  price: {
+  item_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Item'
+  },
+  demand: {
     type: Number,
-    required: true
-  },
-  offer: {
-    type: Number,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  vendor: {
-    type: String,
-    required: true
+    default: 0
   },
   img_url: {
     type: String
   },
-  create_date:{
-    type: Date,
-    default: Date.now
-  }
 });
 
 var Item = mongoose.model('Item', itemSchema);
@@ -56,9 +45,11 @@ module.exports.updateItem = function(id, item, options, callback){
   var query = {_id: id};
   var update = {
     price: item.price,
-    offer: item.offer,
+    quantity: item.quantity,
     description: item.description,
     img_url: item.img_url,
+    // vendor: can not modify this
+    // name: can not modify
     create_date: Date.now
   };
   Item.findOneAndUpdate(query, update, options, callback);

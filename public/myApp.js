@@ -30,6 +30,10 @@ myApp.config(function($routeProvider){
     controller: 'detailController',
     templateUrl: 'views/item_detail.html'
   })
+  .when('/cart', {
+    controller: 'cartController',
+    templateUrl: 'views/cart.html'
+  })
   .otherwise({
     redirectTo: '/'
   });

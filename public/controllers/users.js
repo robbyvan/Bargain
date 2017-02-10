@@ -81,16 +81,9 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
     });
   }
 
-  // $scope.getItem = function(){
-  //   var id = $routeParams.id;
-  //   console.log(id);
-  //   $http.get('/api/item/' + id).then(function(response){
-  //     $scope.item = response.data;
-  //     console.log($scope.item);
-  //   });
-  // }
-
   $scope.addItem = function(){
+    $scope.newItem.vendor = DataShareService.currentUser;
+    console.log(DataShareService.currentUser);
     $http.post('/api/items', $scope.newItem).then(function(response){
       window.location.href = "#!/";
     });
@@ -100,17 +93,8 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
     // DataShareService.ensureAuthenticated();
     $scope.ensureAuthenticated();
     $scope.getItems();
-    if (DataShareService.cart === undefined){
-      DataShareService.cart = {};
-    }
     console.log($scope.items);
-    console.log('old cart: ');
-    console.log(DataShareService.cart);
   }
-
-}]);
-
-myApp.controller('detailController', ['$scope', '$http', '$routeParams', '$location', 'DataShareService', function($scope, $http, $routeParams, $location, DataShareService){
 
 }]);
 
@@ -118,13 +102,8 @@ myApp.controller('detailController', ['$scope', '$http', '$routeParams', '$locat
 
   console.log('detailController loaded.');
 
-    $scope.detailInit = function(){
+  $scope.detailInit = function(){
     $scope.getItem();
-    if (DataShareService.cart === undefined){
-      DataShareService.cart = {};
-    }
-    console.log('old cart: ');
-    console.log(DataShareService.cart);
   }
 
   $scope.getItem = function(){
@@ -137,16 +116,13 @@ myApp.controller('detailController', ['$scope', '$http', '$routeParams', '$locat
   }
 
   $scope.addToCart = function(){
-    var cart = DataShareService.cart;
-    var itemId = $scope.item._id;
-    console.log(cart);
-    if (cart[itemId] === undefined || cart[itemId] === 0){
-      cart[itemId] = 1;
-      console.log('Item added, your cart status: ');
-    }else{
-      console.log('You\'ve already added this item.');
-    }
-    console.log(cart);
   }
 
 }]);
+
+myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$location', 'DataShareService', function($scope, $http, $routeParams, $location, DataShareService){
+
+  console.log('cartController loaded.');
+
+
+}] );
