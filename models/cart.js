@@ -31,8 +31,8 @@ module.exports.createCart = function(userCart, callback){
 module.exports.getBuyList = function(userId, callback){
   var query = {user_id: userId};
   Cart.find(query) //do not return userid
-      .populate('user_id', '_id username') //do not return password and email
-      .populate('orders.item_id')
+      // .populate('user_id', '_id username') //do not return password and email
+      .populate('orders.item_id', 'name price offer vendor')
       .exec(callback);
 }
 

@@ -202,11 +202,12 @@ router.delete('/items/:_id', function(req, res){
         /*Cart Begin*/
 
 //GET: get buy list by user's id
-router.get('/cart/:_userid', function(req, res){
-
-  var userId = req.params._userid;
+router.get('/cart', function(req, res){
+  var userId = req.session.passport.user;
+  console.log('here');
   Cart.getBuyList(userId, function(err, buyList){
     if (err) throw err;
+    console.log(buyList);
     res.json(buyList);
   });
 

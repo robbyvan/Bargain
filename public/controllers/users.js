@@ -138,16 +138,19 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
   console.log('cartController loaded.');
 
   $scope.cartInit = function(){
+    console.log('what');
     $scope.getBuyList();
   }
 
   $scope.getBuyList = function(){
-    var userId = DataShareService.currentUser;
-    $http.get('/api/cart' + userId, function(response){
-      $scope.buys = response.data;
+    // var userId = DataShareService.currentUser;
+    $http.get('/api/cart').then(function(response){
+      console.log('here');
+      $scope.buys = response.data[0].orders;
+      console.log($scope.buys);
     });
   }
 
-  // $scope.updateDemand = function()
+
 
 }] );
