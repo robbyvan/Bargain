@@ -1,10 +1,19 @@
 <div ng-init="cartInit()">
+<a href="#!/"> &lt;&lt;Back </a>
+<br />
+  <h1>Check Out</h1>
+  <h2>Welcome, {{username}}</h2>
   
   <div ng-repeat="buy in buys">
-    <h2>{{buy.item_id.name}}</h2>
+    <h3>{{buy.item_id.name}}</h3>
     <li>Quantity: {{buy.demand}}</li>
-    <li>Price: {{buy.item_id.price}}</li>
+    <li>Price: ${{buy.item_id.price}}</li>
     <li>Vendor: {{buy.item_id.vendor}}</li>
+    <a ng-click="removeFromCart(buy.item_id._id)">Remove from my cart</a>
+  </div>
+  
+  <div>
+    <h1>{{message}}</h1>
   </div>
 
 </div>

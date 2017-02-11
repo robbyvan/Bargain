@@ -1,11 +1,16 @@
 <div ng-init="detailInit()">
     <h3>{{item.name}}</h3>
     <li>Price: ${{item.price}}</li>
-    <li>In Stock: {{item.quantity}}</li>
+    <li>In Stock: {{item.offer}}</li>
     <li>Vendor: {{item.vendor}}</li>
     <p>Description: {{item.description}}</p>
     <br />
+    <br />
+    Quantity: <input type="number" min="1" max="{{item.offer}}" ng-model="demand" />
+    <br />
     <a ng-click="addToCart()">+ Add to my cart</a>
+    <br />
+    <br />
     <br />
     <a href="#!/">&lt;&lt; Back</a>
     <br />

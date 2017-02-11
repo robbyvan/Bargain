@@ -229,6 +229,20 @@ router.post('/cart/add', function(req, res){
 
 });
 
+router.put('/cart/remove', function(req, res){
+  var userId = req.session.passport.user;
+  var itemId = req.body.itemId;
+  console.log('**********');
+  console.log(itemId);
+
+  Cart.removeFromCart(userId, itemId, function(err, buyList){
+    if (err) throw err;
+    console.log(buyList);
+    res.json(buyList);
+  });
+
+});
+
 
 
         /*Cart End*/

@@ -111,24 +111,42 @@ myApp.controller('detailController', ['$scope', '$http', '$routeParams', '$locat
     console.log(id);
     $http.get('/api/item/' + id).then(function(response){
       $scope.item = response.data;
+      $scope.maxRange = $scope.item.offer;
+      console.log('max: ' + $scope.maxRange);
       console.log($scope.item);
     });
   }
 
   $scope.addToCart = function(){
     console.log('clicked.');
-    var addItem =  {
-      itemId: $scope.item._id,
-      demand: 1
-    };
 
-    $http.post('/api/cart/add', addItem).then(function(response){
-      console.log('added!');
-      console.log(response);
-      var buyNum = response.data.orders.length;
-      console.log("Now " + buyNum + " item(s) in your cart.");
+    $http.get('/api/cart').then(function(response){
+      var cartMap = {};
+      var goods = response.data[0].orders;
+
+      for (var i = 0; i < goods.length; ++i){
+        cartMap[goods[i].item_id._id] = goods[i].demand;
+      }
+
+      console.log('here');
+      console.log(cartMap);
+
+      if (cartMap.hasOwnProperty($scope.item._id) === true){
+        console.log('This item is already in your cart.');
+      }else{
+        var addItem =  {
+          itemId: $scope.item._id,
+          demand: $scope.demand
+        };
+        $http.post('/api/cart/add', addItem).then(function(response){
+          console.log('added!');
+          console.log(response);
+          var buyNum = response.data.orders.length;
+          console.log("Now " + buyNum + " item(s) in your cart.");
+        });
+      }
+      
     });
-
   }
 
 }]);
@@ -140,13 +158,38 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
   $scope.cartInit = function(){
     console.log('what');
     $scope.getBuyList();
+    $scope.username = DataShareService.currentUser;
   }
 
   $scope.getBuyList = function(){
-    // var userId = DataShareService.currentUser;
+
     $http.get('/api/cart').then(function(response){
       console.log('here');
       $scope.buys = response.data[0].orders;
+      $scope.buyNum = $scope.buys.length;
+      if ($scope.buyNum === 0){
+        $scope.message = 'Your cart is empty.';
+      }else{
+        var count = 0;
+        var goods = $scope.buys;
+        console.log(goods);
+        for (var i = 0; i < goods.length; ++i){
+          count += goods[i].item_id.price * goods[i].demand;
+        }
+        $scope.message = 'Total: $ ' + count;
+      }
+      // console.log($scope.buys);
+      console.log($scope.buyNum);
+    });
+  }
+
+  $scope.removeFromCart = function(itemId){
+    console.log("remove: " + itemId);
+    var data = {itemId: itemId};
+    $http.put('/api/cart/remove', data).then(function(response){
+      console.log('removed.');
+      console.log(response);
+      $scope.getBuyList();
       console.log($scope.buys);
     });
   }
