@@ -1,11 +1,16 @@
+<a href="#!/login" > &lt;&lt; Back</a>
+<br />
+
+<hr />
+<br />
 <form ng-submit="createUser()">
     <input type="text" ng-model="user.username" placeholder="username" />
     <br /><hr /><br />
-    <input type="text" ng-model="user.password" placeholder="password" />
+    <input type="password" ng-model="user.password" placeholder="password" />
     <br /><hr /><br />
-    <input type="text" ng-model="user.password2" placeholder="password again" />
+    <input type="password" ng-model="user.password2" placeholder="password again" />
     <br /><hr /><br />
-    <input type="text" ng-model="user.email" placeholder="email" />
+    <input type="email" ng-model="user.email" placeholder="email" />
     <br /><hr /><br />
     <button type="submit" >Done</button>
 </form>

@@ -6,7 +6,7 @@
   
   <div ng-repeat="buy in buys">
     <h3>{{buy.item_id.name}}</h3>
-    <li>Quantity: {{buy.demand}}</li>
+    Quantity: <input type="number" min="1" max="{{buy.item_id.offer}}" ng-model = "buy.demand" />
     <li>Price: ${{buy.item_id.price}}</li>
     <li>Vendor: {{buy.item_id.vendor}}</li>
     <a ng-click="removeFromCart(buy.item_id._id)">Remove from my cart</a>
@@ -14,6 +14,7 @@
   
   <div>
     <h1>{{message}}</h1>
+    <a>Check Out</a>
   </div>
 
 </div>

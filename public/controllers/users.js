@@ -24,6 +24,9 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
         for (errInfo in response.data){
          console.log(response.data[errInfo].msg);
         }
+      }else{
+        window.location.href = '#!/login';
+        console.log('you have registered.');
       }
 
     });
@@ -111,8 +114,8 @@ myApp.controller('detailController', ['$scope', '$http', '$routeParams', '$locat
     console.log(id);
     $http.get('/api/item/' + id).then(function(response){
       $scope.item = response.data;
-      $scope.maxRange = $scope.item.offer;
-      console.log('max: ' + $scope.maxRange);
+      // $scope.maxRange = $scope.item.offer;
+      // console.log('max: ' + $scope.maxRange);
       console.log($scope.item);
     });
   }
