@@ -116,6 +116,19 @@ myApp.controller('detailController', ['$scope', '$http', '$routeParams', '$locat
   }
 
   $scope.addToCart = function(){
+    console.log('clicked.');
+    var addItem =  {
+      itemId: $scope.item._id,
+      demand: 1
+    };
+
+    $http.post('/api/cart/add', addItem).then(function(response){
+      console.log('added!');
+      console.log(response);
+      var buyNum = response.data.orders.length;
+      console.log("Now " + buyNum + " item(s) in your cart.");
+    });
+
   }
 
 }]);
@@ -124,5 +137,17 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
 
   console.log('cartController loaded.');
 
+  $scope.cartInit = function(){
+    $scope.getBuyList();
+  }
+
+  $scope.getBuyList = function(){
+    var userId = DataShareService.currentUser;
+    $http.get('/api/cart' + userId, function(response){
+      $scope.buys = response.data;
+    });
+  }
+
+  // $scope.updateDemand = function()
 
 }] );

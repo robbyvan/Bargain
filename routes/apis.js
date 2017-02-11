@@ -5,6 +5,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/users.js');
 var Item = require('../models/items.js');
+var Cart = require('../models/cart.js');
 
 
 //check if authenticated.
@@ -51,28 +52,40 @@ router.post('/register', function(req, res){
   var errors = req.getValidationResult()
   .then(function(result){
     if (!result.isEmpty()){
-    var errors = result.array();
-    console.log('hey! sth wrong!' + errors);
-    // var obj = Object.assign(res, errors);
-    res.json(errors);
-  }else{
-    var newUser = new User({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      cart: [],
-      selling: []
-    });
-    console.log(newUser);
-    User.createUser(newUser, function(err, user){
-      if (err){
-        res.json({created: false});
-        throw err;
-      }
-      console.log('info correct!' + user);
-      res.json({created: true});
-    });
-  }
+      var errors = result.array();
+      console.log('hey! sth wrong!' + errors);
+      // var obj = Object.assign(res, errors);
+      res.json(errors);
+    }else{
+      var newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        cart: [],
+        selling: []
+      });
+      console.log(newUser);
+      User.createUser(newUser, function(err, user){
+        if (err){
+          res.json({created: false});
+          throw err;
+        }
+        console.log('info correct!' + user);
+        res.json({created: true});
+
+        //also create cart for the user
+        var newUserCart = new Cart({
+          user_id: user._id,
+          orders: []
+        });
+        Cart.createCart(newUserCart, function(err, cart){
+          if (err) throw err;
+          console.log('cart created.');
+          console.log(cart);
+        });
+
+      });
+    }
   });       
 });
 
@@ -184,7 +197,40 @@ router.delete('/items/:_id', function(req, res){
   });
 });
 
+        /*Item End*/
 
-/*Item Begin*/
+        /*Cart Begin*/
+
+//GET: get buy list by user's id
+router.get('/cart/:_userid', function(req, res){
+
+  var userId = req.params._userid;
+  Cart.getBuyList(userId, function(err, buyList){
+    if (err) throw err;
+    res.json(buyList);
+  });
+
+});
+
+//POST: add a new item to the cart
+router.post('/cart/add', function(req, res){
+
+  console.log(req.session.passport.user);
+
+  var userId = req.session.passport.user;
+  var buy = req.body;
+
+  Cart.addToCart(userId, buy, function(err, buyList){
+    if (err) throw err;
+    console.log(buyList);
+    res.json(buyList);
+  });
+
+});
+
+
+
+        /*Cart End*/
+
 
 module.exports = router;   

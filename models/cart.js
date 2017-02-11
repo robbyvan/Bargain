@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-//Item Schema
+//Cart Schema
 var cartSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,29 +18,32 @@ var cartSchema = new mongoose.Schema({
   }]
 });
 
-var Cart = mongoose.model('Cart', itemSchema);
+var Cart = mongoose.model('Cart', cartSchema);
 module.exports = Cart;
 
+
+//CREATE: called when when an user first sign up.
+module.exports.createCart = function(userCart, callback){
+  userCart.save(callback);
+}
 
 //READ: get user's cart
 module.exports.getBuyList = function(userId, callback){
   var query = {user_id: userId};
-  Cart.find(query, callback);
-}
-
-//CREATE: called when when an user first sign up.
-module.exports.createCart = function(userCart, callback){
-  Cart.create(userCart, callback);
+  Cart.find(query) //do not return userid
+      .populate('user_id', '_id username') //do not return password and email
+      .populate('orders.item_id')
+      .exec(callback);
 }
 
 //UPDATE: add a new item to the cart
-module.exports.addToCart = function(userId, wish, callback){
+module.exports.addToCart = function(userId, item, callback){
   var query = {user_id: userId};
   var update = {
     $push: {
       "orders": {
-        item_id: wish.itemId, 
-        demand: wish.demand
+        item_id: item.itemId, 
+        demand: item.demand
       }
     }
   };
