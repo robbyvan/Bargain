@@ -28,8 +28,8 @@
       <td colspan="40">{{adminItem.vendor}}</td>
       <td colspan="40">{{adminItem.price}}</td>
       <td colspan="40"><a>Details</a></td>
-      <td colspan="40"><a ng-click="addAdminItem()">Accept</a></td>
-      <td colspan="40"><a ng-click="removeAdminItem()">Remove</a></td>
+      <td colspan="40"><a ng-click="addThenRemove(adminItem._id)">Accept</a></td>
+      <td colspan="40"><a ng-click="RemoveOnly()">Remove</a></td>
     </tr>
   </table>
 </body>
