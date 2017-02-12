@@ -229,6 +229,7 @@ router.post('/cart/add', function(req, res){
 
 });
 
+//REMOVE: remove an item from the cart
 router.put('/cart/remove', function(req, res){
   var userId = req.session.passport.user;
   var itemId = req.body.itemId;
