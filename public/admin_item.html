@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="adminApp">
+<head>
+  <title>Admin item management</title>
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+  <script type="text/javascript" src="/bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="/bower_components/angular-route/angular-route.js"></script>
+  <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/controllers/admins.js"></script>
+
+</head>
+<body ng-controller="ItemController" ng-init="adminItemInit()">
+  <h1>Users' Posts</h1>
+  <table>
+    <tr>
+      <th colspan="40">item name</th>
+      <th colspan="40">vendor</th>
+      <th colspan="40">price</th>
+      <th colspan="40">more info</th>
+      <th colspan="40">Accept</th>
+      <th colspan="40">Decline</th>
+    </tr>
+    <tr ng-repeat="adminItem in adminItems">
+      <td colspan="40">{{adminItem.name}}</td>
+      <td colspan="40">{{adminItem.vendor}}</td>
+      <td colspan="40">{{adminItem.price}}</td>
+      <td colspan="40"><a>Details</a></td>
+      <td colspan="40"><a ng-click="addAdminItem()">Accept</a></td>
+      <td colspan="40"><a ng-click="removeAdminItem()">Remove</a></td>
+    </tr>
+  </table>
+</body>
+</html>

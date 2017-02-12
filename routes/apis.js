@@ -4,6 +4,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/users.js');
+var AdminItem = require('../models/admin_items.js');
 var Item = require('../models/items.js');
 var Cart = require('../models/cart.js');
 
@@ -61,7 +62,7 @@ router.post('/register', function(req, res){
         username: req.body.username,
         password: req.body.password,
         email: req.body.email,
-        cart: [],
+        group: 2, // 1 - admin; 2 - ordinary user
         selling: []
       });
       console.log(newUser);
@@ -90,6 +91,8 @@ router.post('/register', function(req, res){
 });
 
         /*----Registration End---*/     
+
+
 
         /*---Login Begin---*/
 //set strategy
@@ -139,12 +142,55 @@ passport.deserializeUser(function(id, done) {
 });
         /*---Login End---*/
 
+
+
+
         /*---Logout Begin---*/
 router.get('/logout', function(req, res){
   req.logout();
   res.send('done');
 });
         /*---Logout End---*/
+
+
+
+
+        /*Admin Item Begin*/
+router.get('/admin_items', function(req, res){
+  AdminItem.getAdminItems(function(err, items){
+    if(err) throw err;
+    res.json(items);
+  });
+});
+
+router.get('/admin_items/:_id', function(req, res){
+  var id = req.params._id;
+  AdminItem.getAdminItemById(id, function(err, item){
+    if (err) throw err;
+    res.json(item);
+  });
+});
+
+router.post('/admin_items', function(req, res){
+  var newAdminItem = req.body;
+  console.log(newAdminItem);
+  AdminItem.addAdminItem(newAdminItem, function(err, items){
+    if (err) throw err;
+    console.log('added.');
+    res.json(items);
+  });
+});
+
+router.delete('/admin_items/:_id', function(req, res){
+  var id = req.params._id;
+  AdminItem.removeAdminItem(id, function(err, items){
+    if (err) throw err;
+    res.json(items);
+  });
+});
+        /*Admin Item End*/
+
+
 
 
         /*Item Begin*/
@@ -198,6 +244,8 @@ router.delete('/items/:_id', function(req, res){
 });
 
         /*Item End*/
+
+
 
         /*Cart Begin*/
 

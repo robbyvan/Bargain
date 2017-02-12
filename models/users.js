@@ -10,12 +10,13 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  group: {
+    type: Number,
+    required: true
+  },
   email:{
     type: String,
     required: true
-  },
-  cart:{
-    type: Array,
   },
   selling:{
     type: Array,

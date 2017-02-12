@@ -87,7 +87,7 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
   $scope.addItem = function(){
     $scope.newItem.vendor = DataShareService.currentUser;
     console.log(DataShareService.currentUser);
-    $http.post('/api/items', $scope.newItem).then(function(response){
+    $http.post('/api/admin_items', $scope.newItem).then(function(response){
       window.location.href = "#!/";
     });
   }
