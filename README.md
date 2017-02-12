@@ -19,3 +19,5 @@
 + Feb 7th
  - Added Service to share data between controllers
  - Item methods added.
++ Feb 11th
+ - Cart function added.
