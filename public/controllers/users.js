@@ -169,31 +169,47 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
     $http.get('/api/cart').then(function(response){
       console.log('here');
       $scope.buys = response.data[0].orders;
-      $scope.buyNum = $scope.buys.length;
-      if ($scope.buyNum === 0){
+      $scope.calculateCart();
+    });
+  }
+
+  $scope.calculateCart = function(){
+    $scope.buyNum = $scope.buys.length;
+    if ($scope.buyNum === 0){
         $scope.message = 'Your cart is empty.';
       }else{
-        var count = 0;
-        var goods = $scope.buys;
+        let count = 0;
+        let goods = $scope.buys;
         console.log(goods);
-        for (var i = 0; i < goods.length; ++i){
+        for (let i = 0; i < goods.length; ++i){
           count += goods[i].item_id.price * goods[i].demand;
         }
         $scope.message = 'Total: $ ' + count;
       }
       // console.log($scope.buys);
       console.log($scope.buyNum);
-    });
   }
 
-  $scope.removeFromCart = function(itemId){
+  $scope.removeFromCart = function(itemId, cartId){
     console.log("remove: " + itemId);
-    var data = {itemId: itemId};
+    let data = {itemId: itemId};
     $http.put('/api/cart/remove', data).then(function(response){
       console.log('removed.');
       console.log(response);
-      $scope.getBuyList();
       console.log($scope.buys);
+      for (let i = 0; i < $scope.buys.length; ++i){
+        let obj = $scope.buys[i];
+        console.log(obj);
+        console.log(obj["_id"]);
+        console.log(cartId);
+        console.log(i);
+        if (obj['_id'] === cartId){
+          $scope.buys.splice(i, 1);
+          $scope.calculateCart();
+          break;
+        }
+      }
+
     });
   }
 

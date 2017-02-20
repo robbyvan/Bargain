@@ -9,7 +9,7 @@
     Quantity: <input type="number" min="1" max="{{buy.item_id.offer}}" ng-model = "buy.demand" />
     <li>Price: ${{buy.item_id.price}}</li>
     <li>Vendor: {{buy.item_id.vendor}}</li>
-    <a ng-click="removeFromCart(buy.item_id._id)">Remove from my cart</a>
+    <a ng-click="removeFromCart(buy.item_id._id, buy._id)">Remove from my cart</a>
   </div>
   
   <div>

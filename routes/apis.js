@@ -251,6 +251,7 @@ router.delete('/items/:_id', function(req, res){
 
 //GET: get buy list by user's id
 router.get('/cart', function(req, res){
+  //需要检查身份
   var userId = req.session.passport.user;
   console.log('here');
   Cart.getBuyList(userId, function(err, buyList){
