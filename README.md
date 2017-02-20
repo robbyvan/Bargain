@@ -1,4 +1,4 @@
-# Recent project: Bargain
+#Bargain(Unfinished yet)
 
 ##Description
 + O2O Front-End Back-End separation app. 
