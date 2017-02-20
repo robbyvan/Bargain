@@ -21,3 +21,5 @@
  - Item methods added.
 + Feb 11th
  - Cart function added.
++ Feb 20th
+ - Admin pages added, when an item posting by users, it will need approve first, only after approval it can be added to mall and shown to everyone.
