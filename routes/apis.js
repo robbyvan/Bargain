@@ -128,7 +128,7 @@ router.post('/login',
   }
 );
 
-//Serialize
+//Serialize & Deserialize
 passport.serializeUser(function(user, done) {
   console.log('Serialize, user is: ' + user);
   done(null, user.id);
