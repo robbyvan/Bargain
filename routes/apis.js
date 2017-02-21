@@ -156,6 +156,8 @@ router.get('/logout', function(req, res){
 
 
         /*Admin Item Begin*/
+
+//GET
 router.get('/admin_items', function(req, res){
   AdminItem.getAdminItems(function(err, items){
     if(err) throw err;
@@ -163,6 +165,7 @@ router.get('/admin_items', function(req, res){
   });
 });
 
+//GET
 router.get('/admin_items/:_id', function(req, res){
   var id = req.params._id;
   AdminItem.getAdminItemById(id, function(err, item){
@@ -171,6 +174,7 @@ router.get('/admin_items/:_id', function(req, res){
   });
 });
 
+//POST
 router.post('/admin_items', function(req, res){
   var newAdminItem = req.body;
   console.log(newAdminItem);
@@ -181,6 +185,7 @@ router.post('/admin_items', function(req, res){
   });
 });
 
+//DELETE
 router.delete('/admin_items/:_id', function(req, res){
   var id = req.params._id;
   AdminItem.removeAdminItem(id, function(err, items){
@@ -292,8 +297,6 @@ router.put('/cart/remove', function(req, res){
   });
 
 });
-
-
 
         /*Cart End*/
 

@@ -173,6 +173,8 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
     });
   }
 
+  //Need an extra window to edit item quantity and update total amount.
+
   $scope.calculateCart = function(){
     $scope.buyNum = $scope.buys.length;
     if ($scope.buyNum === 0){
@@ -180,14 +182,13 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
       }else{
         let count = 0;
         let goods = $scope.buys;
-        console.log(goods);
+        // console.log(goods);
         for (let i = 0; i < goods.length; ++i){
           count += goods[i].item_id.price * goods[i].demand;
         }
         $scope.message = 'Total: $ ' + count;
       }
-      // console.log($scope.buys);
-      console.log($scope.buyNum);
+      // console.log($scope.buyNum);
   }
 
   $scope.removeFromCart = function(itemId, cartId){
@@ -199,10 +200,10 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
       console.log($scope.buys);
       for (let i = 0; i < $scope.buys.length; ++i){
         let obj = $scope.buys[i];
-        console.log(obj);
-        console.log(obj["_id"]);
-        console.log(cartId);
-        console.log(i);
+        // console.log(obj);
+        // console.log(obj["_id"]);
+        // console.log(cartId);
+        // console.log(i);
         if (obj['_id'] === cartId){
           $scope.buys.splice(i, 1);
           $scope.calculateCart();
@@ -213,6 +214,4 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
     });
   }
 
-
-
-}] );
+}]);
