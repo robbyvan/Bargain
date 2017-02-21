@@ -46,7 +46,8 @@ router.get('/users', function(req, res){
 //POST: create an account.
 router.post('/register', function(req, res){
   console.log(req.body);
-  //Validation
+  
+  //Validations (Validations could be done at client side)
   req.checkBody('username', 'Username is required.').notEmpty();
   //Notice: need to check if username already existed later
   req.checkBody('password', 'Password is required.').notEmpty();

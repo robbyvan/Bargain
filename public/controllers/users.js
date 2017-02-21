@@ -219,10 +219,6 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
       console.log($scope.buys);
       for (let i = 0; i < $scope.buys.length; ++i){
         let obj = $scope.buys[i];
-        // console.log(obj);
-        // console.log(obj["_id"]);
-        // console.log(cartId);
-        // console.log(i);
         if (obj['_id'] === cartId){
           $scope.buys.splice(i, 1);
           $scope.calculateCart();
