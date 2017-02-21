@@ -16,9 +16,11 @@ function ensureAuthenticated(req, res, next){
     return next();
   }else{
     // req.flash('error', 'You are not logged in');
-    res.json({authenticated: false});
+    res.json({authenticated: false, username: undefined});
   }
 }
+
+//GET: check auth
 router.get('/ensureAuth', ensureAuthenticated, function(req, res){
   console.log('=====USER=====');
   console.log(req.session.passport.user);
@@ -264,7 +266,6 @@ router.get('/cart', function(req, res){
     console.log(buyList);
     res.json(buyList);
   });
-
 });
 
 //POST: add a new item to the cart
@@ -280,7 +281,6 @@ router.post('/cart/add', function(req, res){
     console.log(buyList);
     res.json(buyList);
   });
-
 });
 
 //REMOVE: remove an item from the cart
@@ -295,7 +295,6 @@ router.put('/cart/remove', function(req, res){
     console.log(buyList);
     res.json(buyList);
   });
-
 });
 
         /*Cart End*/

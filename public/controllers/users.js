@@ -3,23 +3,29 @@ var myApp = angular.module('myApp');
 myApp.service('DataShareService', function(){
 });
 
-myApp.factory('AuthService', function($http){
+myApp.factory('AuthService', function($http, DataShareService){
   var factory = {};
-  factory.checkLogin = function(){
-    $http.get('/api/ensureAuth').then(function(response){
-      console.log(response.data);
-      let auth = response.data.authenticated;
-      if (!auth){
-        window.location.href = '#!/login';
-      }else{
-        $scope.username = response.data.username;
-        if (DataShareService.currentUser === undefined){
-          DataShareService.currentUser = response.data.username;
-        }
-      }
-      return auth;
-    });
-  }
+  factory.userLoginCheck = new Promise(
+    
+    function (resolve, reject){
+      $http.get('/api/ensureAuth')
+        .then(function(response){
+          // console.log(response.data);
+          let auth = response.data.authenticated;
+          if (!auth){
+            window.location.href = '#!/login';
+          }else{
+            if (DataShareService.currentUser === undefined){
+              DataShareService.currentUser = response.data.username;
+            }
+          }
+
+          resolve(auth);
+
+        });
+
+    }
+  );
   return factory;
 });
 
@@ -62,9 +68,10 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
       console.log('submit success!');
       window.location.href = '#!/';      
       console.log('You are logged in!');
-      console.log($scope.username);
+      console.log(DataShareService.username);
     });
   }
+  //need to intercept 401(unauth) & 400(bad) response
 
 }]);
 
@@ -73,21 +80,16 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
   console.log('homepageController Loaded.');
 
 
-  AuthService.checkLogin();
-  // $scope.ensureAuthenticated = function(){
-  //   $http.get('/api/ensureAuth').then(function(response){
-  //     console.log(response.data);
-  //     var auth = response.data.authenticated;
-  //     if (!auth){
-  //       window.location.href = '#!/login';
-  //     }else{
-  //       $scope.username = response.data.username;
-  //       if (DataShareService.currentUser === undefined){
-  //         DataShareService.currentUser = response.data.username;
-  //       }
-  //     }
-  //   });
-  // }
+  $scope.logged = function(){
+    AuthService.userLoginCheck
+    .then(function(auth){
+      console.log('promise, auth is: ' + auth);
+    })
+    
+  };
+
+  $scope.logged();
+  
 
   // DataShareService.ensureAuthenticated = $scope.ensureAuthenticated;
 
@@ -115,7 +117,8 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
 
   $scope.homepageInit = function(){
     // DataShareService.ensureAuthenticated();
-    $scope.ensureAuthenticated();
+    // let auth = AuthService.userLoginCheck();
+    $scope.username = DataShareService.currentUser;
     $scope.getItems();
     console.log($scope.items);
   }
@@ -179,17 +182,28 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
 
   console.log('cartController loaded.');
 
+  $scope.logged = function(){
+    
+  };
+
   $scope.cartInit = function(){
-    let logged = AuthService.checkLogin();
-    if (logged){
-      console.log('logged');
-      $scope.getBuyList();
-      $scope.username = DataShareService.currentUser;
-    }
+  
+    AuthService.userLoginCheck
+      .then(function(auth){
+
+        console.log('promise, auth is: ' + auth);
+        if (auth){
+          console.log('logged');
+          $scope.username = DataShareService.currentUser;
+          $scope.getBuyList();
+        }else{
+          window.location.href = '#!/login';
+        }
+
+      });
   }
 
   $scope.getBuyList = function(){
-
     $http.get('/api/cart').then(function(response){
       console.log('here');
       $scope.buys = response.data[0].orders;

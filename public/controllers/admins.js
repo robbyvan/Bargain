@@ -1,11 +1,34 @@
 var app = angular.module('adminApp', ['ngRoute']);
 
+app.factory('AuthService', function($http){
+  var factory = {};
+  factory.adminLogin = function(){
+    $http.get('/api/ensureAuth').then(function(response){
+      console.log(response.data);
+      let auth = response.data.authenticated;
+      if (!auth){
+        window.location.href = '#!/login';
+      }else{
+        $scope.username = response.data.username;
+        if (DataShareService.currentUser === undefined){
+          DataShareService.currentUser = response.data.username;
+        }
+      }
+      return auth;
+    });
+  }
+  return factory;
+});
+
 app.controller('reqItemController', ['$scope', '$http', '$routeParams', '$route', '$location', function($scope, $http, $routeParams, $route, $location){
 
   console.log('reqItemController loaded.');
 
   $scope.adminItemInit = function(){
-    $scope.getAdminItems();
+    let logged = AuthService.adminLogin();
+    if (loaded){
+      $scope.getAdminItems();
+    }
   }
 
   $scope.getAdminItems = function(){
@@ -62,6 +85,5 @@ app.controller('reqItemController', ['$scope', '$http', '$routeParams', '$route'
 
     });//end GET
   }
-
 
 }]);
