@@ -19,6 +19,7 @@
  - Added Service to share data between controllers
  - Item methods added.
 + Feb 11th
- - Cart function added.
+ - Cart methods added.
 + Feb 20th
- - Admin pages added, when an item posting by users, it will need approve first, only after approval it can be added to mall and shown to everyone.
+ - Admin pages added. When an item is posted by the user, it will need admin's approval first, only after approval it can be added to mall and shown to everyone.
+ - Authentication added to cart.
