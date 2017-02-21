@@ -11,6 +11,7 @@ var Cart = require('../models/cart.js');
 
 //check if authenticated.
 function ensureAuthenticated(req, res, next){
+  console.log('*************************************');
   console.log(req.isAuthenticated());
   if (req.isAuthenticated()){
     return next();
@@ -125,10 +126,28 @@ router.post('/login',
   passport.authenticate('local'), 
   function(req, res){
     //if authentication passed.
+    req.login(req.user, function(err) {
+      if (err) {return next(err);}
+      console.log("Request Login supossedly successful.");
+      // return res.send('Login successful');
+    });
     console.log('passed, req is: ');
     res.json({logged: true});
   }
 );
+
+// router.post('/login', function(req, res, next) {
+//   passport.authenticate('local', function(err, user, info) {
+//     if (err) { return next(err); }
+//     if (!user) { return res.redirect('/'); }
+//     req.login(user, function(err) {
+//       if (err) { return next(err); }
+//       console.log('passed, req is: ');
+//       res.json({logged: true});
+//     });
+//   })(req, res, next);
+// });
+
 
 //Serialize & Deserialize
 passport.serializeUser(function(user, done) {

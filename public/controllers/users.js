@@ -5,27 +5,9 @@ myApp.service('DataShareService', function(){
 
 myApp.factory('AuthService', function($http, DataShareService){
   var factory = {};
-  factory.userLoginCheck = new Promise(
-    
-    function (resolve, reject){
-      $http.get('/api/ensureAuth')
-        .then(function(response){
-          // console.log(response.data);
-          let auth = response.data.authenticated;
-          if (!auth){
-            window.location.href = '#!/login';
-          }else{
-            if (DataShareService.currentUser === undefined){
-              DataShareService.currentUser = response.data.username;
-            }
-          }
-
-          resolve(auth);
-
-        });
-
+  factory.userLoginCheck = function (resolve, reject){
+      return $http.get('/api/ensureAuth');
     }
-  );
   return factory;
 });
 
@@ -64,12 +46,13 @@ myApp.controller('UserController', ['$scope', '$http', '$routeParams', '$locatio
       DataShareService.currentUser = $scope.user.username;
     }
 
-    $http.post('/api/login', $scope.user).then(function(response){
-      console.log('submit success!');
-      window.location.href = '#!/';      
-      console.log('You are logged in!');
-      console.log(DataShareService.username);
-    });
+    $http.post('/api/login', $scope.user)
+      .then(function(response){
+        console.log('submit success!');
+        window.location.href = '#!/';      
+        console.log('You are logged in!');
+        console.log(DataShareService.currentUser);
+      });
   }
   //need to intercept 401(unauth) & 400(bad) response
 
@@ -79,24 +62,24 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
 
   console.log('homepageController Loaded.');
 
-  $scope.loginCheck = function(){
-    AuthService.userLoginCheck
-    .then(function(auth){
-      console.log('promise, auth is: ' + auth);
-      if (auth){
-        $scope.username = DataShareService.currentUser;
-      }else{
-        $scope.username = 'peregrinator';
-      }
-      return auth;
-    });
-  }
-  
   $scope.homepageInit = function(){
-    $scope.logged = $scope.loginCheck();
-    
-    $scope.getItems();
-    console.log($scope.items);
+    AuthService.userLoginCheck()
+      .then(function(response){
+          console.log(response.data);
+          let auth = response.data.authenticated;
+          if (!auth){
+            window.location.href = '#!/login';
+            // console.log('redirect time ' + Date.now());
+            $scope.username = 'peregrinator';
+          }else{
+            if (DataShareService.currentUser === undefined){
+              DataShareService.currentUser = response.data.username;
+            }
+            $scope.username = DataShareService.currentUser;
+            $scope.getItems();
+            console.log($scope.items);
+          }
+      });
   }
 
   // DataShareService.ensureAuthenticated = $scope.ensureAuthenticated;
@@ -182,25 +165,24 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
 
   console.log('cartController loaded.');
 
-  $scope.logged = function(){
-    
-  };
-
   $scope.cartInit = function(){
-  
-    AuthService.userLoginCheck
-      .then(function(auth){
-
-        console.log('promise, auth is: ' + auth);
-        if (auth){
-          console.log('logged');
-          $scope.username = DataShareService.currentUser;
-          $scope.getBuyList();
-        }else{
-          window.location.href = '#!/login';
-        }
+    AuthService.userLoginCheck()
+      .then(function(response){
+          // console.log(response.data);
+          let auth = response.data.authenticated;
+          if (!auth){
+            window.location.href = '#!/login'; // may not redirect
+            $scope.username = 'peregrinator';
+          }else{
+            if (DataShareService.currentUser === undefined){
+              DataShareService.currentUser = response.data.username;
+            }
+            $scope.username = DataShareService.currentUser;
+            $scope.getBuyList();
+          }
       });
   }
+    
 
   $scope.getBuyList = function(){
     $http.get('/api/cart').then(function(response){
