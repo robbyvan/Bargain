@@ -79,17 +79,25 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
 
   console.log('homepageController Loaded.');
 
-
-  $scope.logged = function(){
+  $scope.loginCheck = function(){
     AuthService.userLoginCheck
     .then(function(auth){
       console.log('promise, auth is: ' + auth);
-    })
-    
-  };
-
-  $scope.logged();
+      if (auth){
+        $scope.username = DataShareService.currentUser;
+      }else{
+        $scope.username = 'peregrinator';
+      }
+      return auth;
+    });
+  }
   
+  $scope.homepageInit = function(){
+    $scope.logged = $scope.loginCheck();
+    
+    $scope.getItems();
+    console.log($scope.items);
+  }
 
   // DataShareService.ensureAuthenticated = $scope.ensureAuthenticated;
 
@@ -113,14 +121,6 @@ myApp.controller('homepageController', ['$scope', '$http', '$routeParams', '$loc
     $http.post('/api/admin_items', $scope.newItem).then(function(response){
       window.location.href = "#!/";
     });
-  }
-
-  $scope.homepageInit = function(){
-    // DataShareService.ensureAuthenticated();
-    // let auth = AuthService.userLoginCheck();
-    $scope.username = DataShareService.currentUser;
-    $scope.getItems();
-    console.log($scope.items);
   }
 
 }]);
@@ -199,7 +199,6 @@ myApp.controller('cartController', ['$scope', '$http', '$routeParams', '$locatio
         }else{
           window.location.href = '#!/login';
         }
-
       });
   }
 
