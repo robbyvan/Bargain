@@ -12,7 +12,7 @@
 + Feb 4th
  - Register API finished. /api/register
  - Login API Added. /api/login 
-   <br />Need to add http interceptor to intercept 400/401 to render using Angular later
+   <br />Need to add http interceptor to intercept 400/401 later
  - Authentication added. /api/ensureAuth
    <br /> If user is not logged in, when visiting pages that need authority, user will be redirected to login page.
 + Feb 7th
