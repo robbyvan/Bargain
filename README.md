@@ -1,4 +1,4 @@
-#Bargain(Unfinished yet)
+#Bargain(Currently working on)
 
 ##Description
 + O2O Front-End Back-End separation app. 
